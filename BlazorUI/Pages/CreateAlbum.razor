@@ -1,0 +1,85 @@
+﻿@page "/CreateAlbum"
+
+@using UIElements
+@using Entities
+@using BlazorUI.Clients
+
+@inject IAlbumClient _albumClient;
+@inject NavigationManager NavMgr
+
+<h3>CreateAlbum</h3>
+
+<div class="box">
+            <EditForm Model="@newAlbumItem" OnValidSubmit="@AddNewAlbum">
+                <DataAnnotationsValidator/> 
+                <ValidationSummary/>
+                <div class="form-group">
+                    <span>
+                        <label>Title:</label>
+                    </span>
+                    <span>
+                        <InputText @bind-Value="newAlbumItem.Title"/>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <span>
+                        <label>Description:</label>
+                    </span>
+                    <span>
+                        <InputTextArea rows="4" @bind-Value="newAlbumItem.Description"/>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <span>
+                        <label>CreatedBy:</label>
+                        </span>
+                    <span>
+                        <InputText rows="4" @bind-Value="newAlbumItem.CreatedBy"/>
+                    </span>
+                </div>
+                <p class="actions">
+                    <button class="btn btn-outline-dark" type="submit">Create</button>
+                </p>
+            </EditForm>
+                <label>@errorLabel</label>
+                @if (!string.IsNullOrEmpty(errorLabel))
+                    {
+                        <label>@errorLabel</label>
+                    }
+                    @if (showModal)
+                    {
+                        <Modal>
+                            <p>You have added a new album to database</p>
+                            <button @onclick="@Proceed">Wonderful</button>
+                        </Modal>
+                    }
+            </div>
+
+
+@code {
+    private Album newAlbumItem = new Album();
+    private string errorLabel = String.Empty;
+
+    private bool showModal;
+    
+    private async Task AddNewAlbum()
+    {
+        try
+        {
+            await _albumClient.CreateAlbumAsync(newAlbumItem);
+            showModal = true;
+            newAlbumItem = new Album();
+        }
+        catch (Exception e)
+        {
+            errorLabel = e.Message;
+        }
+    }
+
+    private void Proceed()
+    {
+        showModal = false;
+        NavMgr.NavigateTo("/DisplayImages");
+    }
+    
+}

@@ -1,0 +1,123 @@
+﻿@page "/CreateImage"
+
+@using UIElements
+@using Entities
+@using BlazorUI.Clients
+
+@inject IImageClient _ImageClient;
+@inject NavigationManager NavMgr
+
+<h3>CreateImage</h3>
+
+<div class="box">
+            <EditForm Model="@newImageItem" OnValidSubmit="@AddNewImage">
+                <DataAnnotationsValidator/> 
+                <ValidationSummary/>
+                <div class="form-group">
+                    <span>
+                        <label>Title:</label>
+                    </span>
+                    <span>
+                        <InputText @bind-Value="newImageItem.Title"/>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <span>
+                        <label>Description:</label>
+                    </span>
+                    <span>
+                        <InputTextArea rows="4" @bind-Value="newImageItem.Description"/>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <span>
+                        <label>URL:</label>
+                    </span>
+                    <span>
+                        <InputTextArea rows="4" @bind-Value="newImageItem.Url"/>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <span>
+                        <label>Topic:</label>
+                    </span>
+                    <span>
+                        <InputText rows="4" @bind-Value="newImageItem.Topic"/>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <span>
+                        <label>Album title:</label>
+                    </span>
+                        <InputText rows="4" @bind-Value="albumTitle"/>
+                </div>
+                <p class="actions">
+                    <button class="btn btn-outline-dark" type="submit">Create</button>
+                </p>
+            </EditForm>
+                <label>@errorLabel</label>
+                @if (!string.IsNullOrEmpty(errorLabel))
+                    {
+                        <label>@errorLabel</label>
+                    }
+                    @if (showModal)
+                    {
+                        <Modal>
+                            <p>You have added a new image to database</p>
+                            <img class="card-img-top" src="@newImageItem.Url" alt="Card image cap">
+                            <button @onclick="@Proceed">Wonderful</button>
+                        </Modal>
+                    }
+            </div>
+
+
+@code {
+    private Image newImageItem = new Image();
+    private string albumTitle = String.Empty;
+    private string errorLabel = String.Empty;
+
+    private IEnumerable<string> albulTitles = new List<string>();
+    
+    private bool showModal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            albulTitles = await _ImageClient.GetAlbumTitlesAsync();
+        }
+        catch (Exception e)
+        {
+            errorLabel = e.Message;
+        }
+    }
+    
+    private async Task AddNewImage()
+    {
+        try
+        {
+
+            if (albulTitles.Contains(albumTitle))
+            {
+                await _ImageClient.AddImageToAlbumAsync(newImageItem,albumTitle);
+                showModal = true;
+                newImageItem = new Image();
+            }
+            else
+            {
+                errorLabel = "Album title doesn't exist!!";
+            }
+        }
+        catch (Exception e)
+        {
+            errorLabel = e.Message;
+        }
+    }
+
+    private void Proceed()
+    {
+        showModal = false;
+        NavMgr.NavigateTo("/DisplayImages");
+    }
+
+}

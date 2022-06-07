@@ -1,0 +1,88 @@
+﻿@page "/DisplayImages"
+
+@using Entities
+@using BlazorUI.Clients
+@inject IDisplayClient _displayClient;
+
+<h3>DisplayImages</h3>
+
+
+<div class="filterbar">
+    <div class="filterscontainer">
+        <div class="filter">
+            <div>
+                <label>Album created by:</label>
+            </div>
+            <div>
+                <input type="text" class="owneridfield" @bind="albumCreator" min="0"/>
+            </div>
+        </div>
+        <div class="filter">
+            <div>
+                <label>Topic:</label>
+            </div>
+            <div>
+                <input type="text" class="owneridfield" @bind="topic" min="0"/>
+            </div>
+        </div>
+        <button @onclick="@((() => CallFilter()))"> Search </button>
+    </div>
+</div>
+
+
+@if (images  == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else if (!images .Any())
+{
+    <p>
+        <em>No ToDo items exist. Please add some.</em>
+    </p>
+}
+else
+{
+
+    <div class="container">
+        <div class="row">
+            @foreach (var item in images)
+            {
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="@item.Url" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Topic: @item.Topic</h6>
+                        <p class="card-text">Short Description: @item.Description</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+
+    private ICollection<Image> images = new List<Image>();
+    private string albumCreator, topic;
+    private string errorLabel = String.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await CallFilter();
+        }
+        catch (Exception e)
+        {
+            errorLabel = e.Message;
+        }
+    }
+
+    private async Task CallFilter()
+    {
+        images = await _displayClient.GetImagesAsync(albumCreator, topic);
+    }
+    
+}

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\milit\\RiderProjects\\DnpExam308842\\Entities\\Entities.csproj": {}
+    "C:\\Users\\Adi\\RiderProjects\\DnpExam\\Entities\\Entities.csproj": {}
   },
   "projects": {
-    "C:\\Users\\milit\\RiderProjects\\DnpExam308842\\Entities\\Entities.csproj": {
+    "C:\\Users\\Adi\\RiderProjects\\DnpExam\\Entities\\Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\milit\\RiderProjects\\DnpExam308842\\Entities\\Entities.csproj",
+        "projectUniqueName": "C:\\Users\\Adi\\RiderProjects\\DnpExam\\Entities\\Entities.csproj",
         "projectName": "Entities",
-        "projectPath": "C:\\Users\\milit\\RiderProjects\\DnpExam308842\\Entities\\Entities.csproj",
-        "packagesPath": "C:\\Users\\milit\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\milit\\RiderProjects\\DnpExam308842\\Entities\\obj\\",
+        "projectPath": "C:\\Users\\Adi\\RiderProjects\\DnpExam\\Entities\\Entities.csproj",
+        "packagesPath": "C:\\Users\\Adi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Adi\\RiderProjects\\DnpExam\\Entities\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\milit\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Adi\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
